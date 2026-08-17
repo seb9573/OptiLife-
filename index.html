@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OptiLife</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f4f6f8;
+    color: #111827;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+header p {
+    margin: 8px 0 0;
+    opacity: 0.75;
+}
+
+main {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    margin: 7px 0 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+button {
+    border: 0;
+    border-radius: 11px;
+    padding: 13px 17px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background: #111827;
+    color: white;
+}
+
+.secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.full {
+    width: 100%;
+}
+
+.task {
+    border: 1px solid #e5e7eb;
+    border-radius: 13px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.task-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.task-info {
+    color: #6b7280;
+    margin: 6px 0 12px;
+}
+
+.task-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 20px;
+}
+
+.plan-item {
+    border-left: 4px solid #111827;
+    padding: 12px;
+    margin: 10px 0;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.plan-item strong {
+    font-size: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.stat {
+    background: #f3f4f6;
+    padding: 13px 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.hidden {
+    display: none;
+}
+
+.success {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #ecfdf5;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 12px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🧠 OptiLife</h1>
+    <p>Your day. Optimised.</p>
+</header>
+
+<main>
+
+<div class="card">
+
+    <h2>📍 Start</h2>
+
+    <label>Starting location</label>
+
+    <input
+        id="start"
+        placeholder="e.g. Ranelagh, Dublin"
+    >
+
+    <button
+        class="secondary"
+        onclick="getLocation()"
+    >
+        📍 Use my location
+    </button>
+
+    <p id="locationStatus"></p>
+
+</div>
+
+
+<div class="card">
+
+    <h2>⏰ Available time</h2>
+
+    <label>Minutes available</label>
+
+    <input
+        id="available"
+        type="number"
+        value="420"
+        min="1"
+    >
+
+</div>
+
+
+<div class="card">
+
+    <h2>➕ Add something</h2>
+
+    <label>What are you doing?</label>
+
+    <input
+        id="name"
+        placeholder="e.g. Gym"
+    >
+
+    <label>Where?</label>
+
+    <input
+        id="place"
+        placeholder="e.g. Flyefit Ranelagh"
+    >
+
+    <label>How long? (minutes)</label>
+
+    <input
+        id="duration"
+        type="number"
+        value="30"
+        min="1"
+    >
+
+    <label>Priority</label>
+
+    <select id="priority">
+
+        <option value="10">🔴 Essential</option>
+        <option value="8">🟠 Very important</option>
+        <option value="6" selected>🟡 Important</option>
+        <option value="4">🟢 Nice to do</option>
+        <option value="2">⚪ Optional</option>
+
+    </select>
+
+    <button
+        class="primary"
+        onclick="addTask()"
+    >
+        ➕ Add task
+    </button>
+
+</div>
+
+
+<div class="card">
+
+    <h2>📋 Your tasks</h2>
+
+    <div id="tasks">
+
+        <div class="empty">
+            Nothing planned yet.<br><br>
+            Add your first task above.
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <button
+        class="primary full"
+        onclick="optimise()"
+    >
+        🚀 Optimise my day
+    </button>
+
+</div>
+
+
+<div
+    id="result"
+    class="card hidden"
+>
+
+    <h2>🧠 Your plan</h2>
+
+    <div id="plan"></div>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="total"
+            >
+                0m
+            </div>
+
+            <div class="stat-label">
+                Total
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="activities"
+            >
+                0m
+            </div>
+
+            <div class="stat-label">
+                Activities
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="remaining"
+            >
+                0m
+            </div>
+
+            <div class="stat-label">
+                Remaining
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="message"
+        class="success"
+    ></div>
+
+    <br>
+
+    <button
+        class="secondary"
+        onclick="sharePlan()"
+    >
+        📤 Share plan
+    </button>
+
+</div>
+
+</main>
+
+
+<script>
+
+let tasks = [];
+let currentPlan = [];
+
+
+/* =========================
+   ADD TASK
+========================= */
+
+function addTask() {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const place =
+        document.getElementById("place").value.trim();
+
+    const duration =
+        Number(document.getElementById("duration").value);
+
+    const priority =
+        Number(document.getElementById("priority").value);
+
+
+    if (!name) {
+        alert("Enter what you want to do.");
+        return;
+    }
+
+    if (!place) {
+        alert("Enter where you're going.");
+        return;
+    }
+
+    if (!duration || duration < 1) {
+        alert("Enter a valid duration.");
+        return;
+    }
+
+
+    tasks.push({
+        name: name,
+        place: place,
+        duration: duration,
+        priority: priority
+    });
+
+
+    document.getElementById("name").value = "";
+    document.getElementById("place").value = "";
+    document.getElementById("duration").value = "30";
+
+
+    showTasks();
+}
+
+
+/* =========================
+   SHOW TASKS
+========================= */
+
+function showTasks() {
+
+    const box =
+        document.getElementById("tasks");
+
+
+    if (tasks.length === 0) {
+
+        box.innerHTML =
+            '<div class="empty">Nothing planned yet.<br><br>Add your first task above.</div>';
+
+        return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    tasks.forEach(function(task, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "task";
+
+
+        item.innerHTML =
+
+            '<div class="task-title">' +
+            escapeHTML(task.name) +
+            '</div>' +
+
+            '<div class="task-info">' +
+            '📍 ' + escapeHTML(task.place) +
+            '<br>⏱️ ' + task.duration + ' minutes' +
+            '<br>⭐ Priority ' + task.priority +
+            '</div>' +
+
+            '<div class="task-buttons">' +
+
+            '<button class="secondary" onclick="directions(' +
+            index +
+            ')">🗺️ Directions</button>' +
+
+            '<button class="danger" onclick="removeTask(' +
+            index +
+            ')">🗑️ Remove</button>' +
+
+            '</div>';
+
+
+        box.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================
+   REMOVE TASK
+========================= */
+
+function removeTask(index) {
+
+    tasks.splice(index, 1);
+
+    showTasks();
+
+}
+
+
+/* =========================
+   OPTIMISE
+========================= */
+
+function optimise() {
+
+    if (tasks.length === 0) {
+
+        alert("Add at least one task first.");
+
+        return;
+    }
+
+
+    let available =
+        Number(document.getElementById("available").value);
+
+
+    if (!available || available < 1) {
+
+        alert("Enter your available time.");
+
+        return;
+    }
+
+
+    currentPlan =
+        tasks.slice().sort(function(a, b) {
+
+            return b.priority - a.priority;
+
+        });
+
+
+    let used = 0;
+    let activities = 0;
+    let selected = [];
+
+
+    for (let i = 0; i < currentPlan.length; i++) {
+
+        const task =
+            currentPlan[i];
+
+
+        if (
+            used + task.duration
+            <=
+            available
+        ) {
+
+            selected.push(task);
+
+            used += task.duration;
+
+            activities += task.duration;
+
+        }
+
+    }
+
+
+    currentPlan = selected;
+
+
+    showPlan(
+        used,
+        activities,
+        available
+    );
+
+}
+
+
+/* =========================
+   SHOW PLAN
+========================= */
+
+function showPlan(
+    total,
+    activities,
+    available
+) {
+
+    const result =
+        document.getElementById("result");
+
+    const plan =
+        document.getElementById("plan");
+
+
+    result.classList.remove("hidden");
+
+    plan.innerHTML = "";
+
+
+    currentPlan.forEach(function(task, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "plan-item";
+
+
+        item.innerHTML =
+
+            '<strong>' +
+            (index + 1) +
+            '. ' +
+            escapeHTML(task.name) +
+            '</strong>' +
+
+            '<br>📍 ' +
+            escapeHTML(task.place) +
+
+            '<br>⏱️ ' +
+            task.duration +
+            ' minutes' +
+
+            '<br><br>' +
+
+            '<button class="secondary" onclick="openMap(\'' +
+            encodeURIComponent(task.place) +
+            '\')">' +
+            '🗺️ Get directions' +
+            '</button>';
+
+
+        plan.appendChild(item);
+
+    });
+
+
+    document.getElementById("total").textContent =
+        total + "m";
+
+
+    document.getElementById("activities").textContent =
+        activities + "m";
+
+
+    document.getElementById("remaining").textContent =
+        Math.max(
+            0,
+            available - total
+        ) + "m";
+
+
+    document.getElementById("message").innerHTML =
+
+        "🎉 OptiLife fitted " +
+        currentPlan.length +
+        " task" +
+        (currentPlan.length === 1 ? "" : "s") +
+        " into your available time.";
+
+}
+
+
+/* =========================
+   DIRECTIONS
+========================= */
+
+function directions(index) {
+
+    const task =
+        tasks[index];
+
+    openMap(
+        encodeURIComponent(task.place)
+    );
+
+}
+
+
+function openMap(destination) {
+
+    const start =
+        document.getElementById("start").value.trim();
+
+
+    const origin =
+        start
+        ?
+        encodeURIComponent(start)
+        :
+        "Current+Location";
+
+
+    const url =
+        "https://www.google.com/maps/dir/?api=1" +
+        "&origin=" +
+        origin +
+        "&destination=" +
+        destination;
+
+
+    window.open(url, "_blank");
+
+}
+
+
+/* =========================
+   LOCATION
+========================= */
+
+function getLocation() {
+
+    const status =
+        document.getElementById("locationStatus");
+
+
+    if (!navigator.geolocation) {
+
+        status.textContent =
+            "Location is not supported.";
+
+        return;
+    }
+
+
+    status.textContent =
+        "📍 Finding you...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+
+            document.getElementById("start").value =
+                latitude.toFixed(5) +
+                ", " +
+                longitude.toFixed(5);
+
+
+            status.textContent =
+                "✅ Location added.";
+
+        },
+
+        function() {
+
+            status.textContent =
+                "Couldn't access your location. You can type it instead.";
+
+        }
+
+    );
+
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+function sharePlan() {
+
+    if (currentPlan.length === 0) {
+
+        alert("Create a plan first.");
+
+        return;
+    }
+
+
+    const remaining =
+        document.getElementById("remaining").textContent;
+
+
+    const text =
+        "🧠 I just planned my day with OptiLife!\n\n" +
+        "📋 " +
+        currentPlan.length +
+        " tasks planned\n" +
+        "⏱️ " +
+        document.getElementById("total").textContent +
+        " total\n" +
+        "🚀 " +
+        remaining +
+        " available\n\n" +
+        "Your day. Optimised.";
+
+
+    if (navigator.share) {
+
+        navigator.share({
+
+            title: "My OptiLife plan",
+
+            text: text
+
+        });
+
+    } else {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(function() {
+
+                alert("📋 Plan copied!");
+
+            });
+
+    }
+
+}
+
+
+/* =========================
+   SAFETY
+========================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+showTasks();
+
+</script>
+
+</body>
+</html>
