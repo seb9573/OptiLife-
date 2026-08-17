@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OptiLife</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#111827">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f4f6f8;
+    color:#111827;
+    padding-bottom:80px;
+}
+
+header{
+    background:#111827;
+    color:white;
+    padding:28px 20px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:34px;
+}
+
+header p{
+    margin:8px 0 0;
+    opacity:.75;
+}
+
+main{
+    max-width:700px;
+    margin:auto;
+    padding:15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:18px;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+h2{
+    margin-top:0;
+}
+
+label{
+    display:block;
+    font-weight:600;
+    margin-top:10px;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    margin:7px 0 15px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+    background:white;
+}
+
+input[type="range"]{
+    padding:0;
+    margin:8px 0 5px;
+}
+
+button{
+    border:0;
+    border-radius:11px;
+    padding:13px 17px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary{
+    background:#111827;
+    color:white;
+}
+
+.secondary{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.discover-button{
+    background:#ede9fe;
+    color:#5b21b6;
+}
+
+.full{
+    width:100%;
+}
+
+.task{
+    border:1px solid #e5e7eb;
+    border-radius:13px;
+    padding:14px;
+    margin-bottom:10px;
+}
+
+.task.locked{
+    border:2px solid #7c3aed;
+    background:#faf5ff;
+}
+
+.task-title{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.task-info{
+    color:#6b7280;
+    margin:6px 0 12px;
+    line-height:1.5;
+}
+
+.task-buttons{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.empty{
+    text-align:center;
+    color:#6b7280;
+    padding:20px;
+}
+
+.lock-box{
+    padding:14px;
+    margin-top:10px;
+    background:#faf5ff;
+    border-radius:12px;
+}
+
+.plan-item{
+    padding:15px;
+    margin:10px 0;
+    background:#f9fafb;
+    border-radius:10px;
+    border-left:4px solid #111827;
+}
+
+.plan-item.locked-plan{
+    background:#faf5ff;
+    border-left-color:#7c3aed;
+}
+
+.plan-item strong{
+    font-size:18px;
+}
+
+.plan-arrow{
+    text-align:center;
+    color:#6b7280;
+    font-weight:bold;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:15px;
+}
+
+.stat{
+    background:#f3f4f6;
+    padding:13px 5px;
+    text-align:center;
+    border-radius:10px;
+}
+
+.stat-number{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.stat-label{
+    font-size:12px;
+    color:#6b7280;
+}
+
+.success{
+    margin-top:15px;
+    padding:15px;
+    border-radius:12px;
+    background:#ecfdf5;
+}
+
+.warning{
+    margin-top:15px;
+    padding:15px;
+    border-radius:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+}
+
+.hidden{
+    display:none;
+}
+
+.small{
+    font-size:13px;
+    color:#6b7280;
+}
+
+.slider-row{
+    margin-bottom:18px;
+}
+
+.slider-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.slider-value{
+    font-weight:bold;
+}
+
+.discover-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.category{
+    padding:18px 10px;
+    background:#f3f4f6;
+    border-radius:14px;
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.place-card{
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    padding:15px;
+    margin-top:12px;
+}
+
+.place-icon{
+    font-size:32px;
+}
+
+.place-name{
+    font-size:19px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.place-info{
+    color:#6b7280;
+    line-height:1.5;
+    margin:7px 0 12px;
+}
+
+.nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:white;
+    border-top:1px solid #e5e7eb;
+    display:flex;
+    justify-content:space-around;
+    padding:8px 5px;
+    z-index:100;
+}
+
+.nav button{
+    background:transparent;
+    color:#6b7280;
+    padding:8px 10px;
+    font-size:13px;
+}
+
+.nav button.active{
+    color:#111827;
+    font-weight:bold;
+}
+
+.ai-box{
+    background:#f5f3ff;
+    border:1px solid #ddd6fe;
+    padding:15px;
+    border-radius:14px;
+    margin-top:12px;
+}
+
+@media(max-width:600px){
+    main{
+        padding:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🧠 OptiLife</h1>
+<p>Your day. Optimised.</p>
+</header>
+
+<main>
+
+<!-- HOME -->
+
+<section id="homeSection">
+
+<div class="card">
+
+<h2>👋 Welcome to OptiLife</h2>
+
+<p>
+Plan your day, protect important events and let OptiLife help you make better decisions.
+</p>
+
+<div class="ai-box">
+
+<strong>🤖 OptiLife AI</strong>
+
+<p class="small">
+Discover places, optimise your schedule and personalise your day.
+</p>
+
+<button class="discover-button full" onclick="showSection('discover')">
+✨ Discover near me
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📍 Start</h2>
+
+<label>Starting location</label>
+
+<input id="start" placeholder="e.g. Wexford, Ireland">
+
+<button class="secondary" onclick="getLocation()">
+📍 Use my location
+</button>
+
+<p id="locationStatus"></p>
+
+</div>
+
+<div class="card">
+
+<h2>⏰ Available time</h2>
+
+<label>Hours</label>
+
+<input id="availableHours" type="number" min="0" value="7">
+
+<label>Minutes</label>
+
+<input id="availableMinutes" type="number" min="0" max="59" value="0">
+
+<p class="small">
+Example: 2 hours 30 minutes
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>🎚️ Your preferences</h2>
+
+<p class="small">
+Tell OptiLife what matters most to you.
+</p>
+
+<div class="slider-row">
+
+<div class="slider-header">
+<span>💰 Cost</span>
+<span id="costValue" class="slider-value">50%</span>
+</div>
+
+<input
+id="costSlider"
+type="range"
+min="0"
+max="100"
+value="50"
+oninput="updateSliderValues()"
+>
+
+</div>
+
+<div class="slider-row">
+
+<div class="slider-header">
+<span>⚡ Speed</span>
+<span id="speedValue" class="slider-value">50%</span>
+</div>
+
+<input
+id="speedSlider"
+type="range"
+min="0"
+max="100"
+value="50"
+oninput="updateSliderValues()"
+>
+
+</div>
+
+<div class="slider-row">
+
+<div class="slider-header">
+<span>😌 Comfort</span>
+<span id="comfortValue" class="slider-value">50%</span>
+</div>
+
+<input
+id="comfortSlider"
+type="range"
+min="0"
+max="100"
+value="50"
+oninput="updateSliderValues()"
+>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>➕ Add something</h2>
+
+<label>What are you doing?</label>
+
+<input id="name" placeholder="e.g. Shopping">
+
+<label>Where?</label>
+
+<input id="place" placeholder="e.g. Tesco">
+
+<label>How long will you spend there?</label>
+
+<div style="display:flex;gap:8px">
+
+<input
+id="durationHours"
+type="number"
+min="0"
+value="0"
+placeholder="Hours"
+>
+
+<input
+id="durationMinutes"
+type="number"
+min="0"
+max="59"
+value="30"
+placeholder="Minutes"
+>
+
+</div>
+
+<p class="small">
+This is the time you will actually spend at the location, not travel time.
+</p>
+
+<label>Priority</label>
+
+<select id="priority">
+
+<option value="10">🔴 Essential</option>
+<option value="8">🟠 Very important</option>
+<option value="6" selected>🟡 Important</option>
+<option value="4">🟢 Nice to do</option>
+<option value="2">⚪ Optional</option>
+
+</select>
+
+<label>
+
+<input
+id="orderLock"
+type="checkbox"
+style="width:auto"
+onchange="toggleLockBox()"
+>
+
+🔒 Order Lock
+
+</label>
+
+<div id="lockBox" class="lock-box hidden">
+
+<label>Exact time</label>
+
+<input id="lockedTime" type="time">
+
+<label>Reminder</label>
+
+<select id="reminder">
+
+<option value="0">No reminder</option>
+<option value="5">5 minutes before</option>
+<option value="10">10 minutes before</option>
+<option value="15">15 minutes before</option>
+<option value="30">30 minutes before</option>
+
+</select>
+
+<p class="small">
+OptiLife will keep this event fixed.
+</p>
+
+</div>
+
+<br>
+
+<button class="primary" onclick="addTask()">
+➕ Add task
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Your tasks</h2>
+
+<div id="tasks"></div>
+
+</div>
+
+<div class="card">
+
+<button class="primary full" onclick="requestNotifications()">
+🔔 Enable notifications
+</button>
+
+<br><br>
+
+<button class="primary full" onclick="optimise()">
+🚀 Optimise my day
+</button>
+
+</div>
+
+<div id="result" class="card hidden">
+
+<h2>🧠 Your plan</h2>
+
+<div id="plan"></div>
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-number" id="total">0m</div>
+<div class="stat-label">Total</div>
+</div>
+
+<div class="stat">
+<div class="stat-number" id="activities">0m</div>
+<div class="stat-label">Activities</div>
+</div>
+
+<div class="stat">
+<div class="stat-number" id="remaining">0m</div>
+<div class="stat-label">Remaining</div>
+</div>
+
+</div>
+
+<div id="message" class="success"></div>
+
+<br>
+
+<button class="secondary" onclick="sharePlan()">
+📤 Share plan
+</button>
+
+</div>
+
+</section>
+
+
+<!-- DISCOVER -->
+
+<section id="discoverSection" class="hidden">
+
+<div class="card">
+
+<h2>🤖 Discover</h2>
+
+<p>
+Find interesting places around you and add them to your day.
+</p>
+
+<div class="ai-box">
+
+<strong>✨ OptiLife AI Discover</strong>
+
+<p class="small">
+These are demonstration recommendations for V10.9A.
+Live places, reviews and trending data will be connected in V10.9B.
+</p>
+
+</div>
+
+<h3>What are you looking for?</h3>
+
+<div class="discover-grid">
+
+<div class="category" onclick="discover('Food')">
+🍔<br>Food
+</div>
+
+<div class="category" onclick="discover('Cafés')">
+☕<br>Cafés
+</div>
+
+<div class="category" onclick="discover('Shopping')">
+🛍️<br>Shopping
+</div>
+
+<div class="category" onclick="discover('Outdoors')">
+🌳<br>Outdoors
+</div>
+
+<div class="category" onclick="discover('Entertainment')">
+🎮<br>Entertainment
+</div>
+
+<div class="category" onclick="discover('Highly rated')">
+⭐<br>Highly rated
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🔥 Trending</h2>
+
+<div id="discoverResults">
+
+<div class="empty">
+Choose a category above.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PLANNER -->
+
+<section id="plannerSection" class="hidden">
+
+<div class="card">
+
+<h2>📅 Daily Planner</h2>
+
+<p class="small">
+Your current OptiLife plan appears here.
+</p>
+
+<div id="plannerView">
+
+<div class="empty">
+Optimise your day to create your planner.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MAPS -->
+
+<section id="mapsSection" class="hidden">
+
+<div class="card">
+
+<h2>🗺️ Maps</h2>
+
+<p>
+Use your tasks as destinations and get directions between them.
+</p>
+
+<button class="primary full" onclick="openAllDirections()">
+🗺️ Open route in Maps
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- NAVIGATION -->
+
+<nav class="nav">
+
+<button id="navHome" class="active" onclick="showSection('home')">
+🏠<br>Home
+</button>
+
+<button id="navDiscover" onclick="showSection('discover')">
+🤖<br>Discover
+</button>
+
+<button id="navPlanner" onclick="showSection('planner')">
+📅<br>Planner
+</button>
+
+<button id="navMaps" onclick="showSection('maps')">
+🗺️<br>Maps
+</button>
+
+</nav>
+
+
+<script>
+
+let tasks=[];
+let currentPlan=[];
+
+
+/* -------------------------
+   GENERAL
+------------------------- */
+
+function formatTime(minutes){
+
+    minutes=Math.max(0,Math.round(minutes));
+
+    const hours=Math.floor(minutes/60);
+    const mins=minutes%60;
+
+    if(hours===0){
+        return mins+" minute"+(mins===1?"":"s");
+    }
+
+    if(mins===0){
+        return hours+" hour"+(hours===1?"":"s");
+    }
+
+    return hours+" hour"+(hours===1?"":"s")+" "+
+           mins+" minute"+(mins===1?"":"s");
+}
+
+
+function getAvailable(){
+
+    const h=Number(
+        document.getElementById("availableHours").value
+    )||0;
+
+    const m=Number(
+        document.getElementById("availableMinutes").value
+    )||0;
+
+    return h*60+m;
+}
+
+
+function getDuration(){
+
+    const h=Number(
+        document.getElementById("durationHours").value
+    )||0;
+
+    const m=Number(
+        document.getElementById("durationMinutes").value
+    )||0;
+
+    return h*60+m;
+}
+
+
+/* -------------------------
+   NAVIGATION
+------------------------- */
+
+function showSection(section){
+
+    document.getElementById("homeSection")
+        .classList.toggle("hidden",section!=="home");
+
+    document.getElementById("discoverSection")
+        .classList.toggle("hidden",section!=="discover");
+
+    document.getElementById("plannerSection")
+        .classList.toggle("hidden",section!=="planner");
+
+    document.getElementById("mapsSection")
+        .classList.toggle("hidden",section!=="maps");
+
+
+    document.getElementById("navHome")
+        .classList.toggle("active",section==="home");
+
+    document.getElementById("navDiscover")
+        .classList.toggle("active",section==="discover");
+
+    document.getElementById("navPlanner")
+        .classList.toggle("active",section==="planner");
+
+    document.getElementById("navMaps")
+        .classList.toggle("active",section==="maps");
+
+
+    if(section==="planner"){
+        updatePlanner();
+    }
+
+}
+
+
+/* -------------------------
+   SLIDERS
+------------------------- */
+
+function updateSliderValues(){
+
+    document.getElementById("costValue").textContent=
+        document.getElementById("costSlider").value+"%";
+
+    document.getElementById("speedValue").textContent=
+        document.getElementById("speedSlider").value+"%";
+
+    document.getElementById("comfortValue").textContent=
+        document.getElementById("comfortSlider").value+"%";
+
+}
+
+
+/* -------------------------
+   ORDER LOCK
+------------------------- */
+
+function toggleLockBox(){
+
+    const checked=
+        document.getElementById("orderLock").checked;
+
+    document
+        .getElementById("lockBox")
+        .classList
+        .toggle("hidden",!checked);
+
+}
+
+
+/* -------------------------
+   NOTIFICATIONS
+------------------------- */
+
+async function requestNotifications(){
+
+    if(!("Notification" in window)){
+
+        alert(
+            "Notifications aren't supported in this browser. " +
+            "Try OptiLife from your installed Home Screen app."
+        );
+
+        return;
+    }
+
+    const permission=
+        await Notification.requestPermission();
+
+    if(permission==="granted"){
+
+        new Notification(
+            "🧠 OptiLife notifications enabled!",
+            {
+                body:
+                "You'll receive reminders for supported events."
+            }
+        );
+
+    }else{
+
+        alert(
+            "Notification permission wasn't granted."
+        );
+
+    }
+
+}
+
+
+/* -------------------------
+   TASKS
+------------------------- */
+
+function addTask(){
+
+    const name=
+        document.getElementById("name").value.trim();
+
+    const place=
+        document.getElementById("place").value.trim();
+
+    const duration=
+        getDuration();
+
+    const priority=
+        Number(
+            document.getElementById("priority").value
+        );
+
+    const locked=
+        document.getElementById("orderLock").checked;
+
+    const lockedTime=
+        document.getElementById("lockedTime").value;
+
+    const reminder=
+        Number(
+            document.getElementById("reminder").value
+        );
+
+
+    if(!name){
+
+        alert("Enter what you want to do.");
+        return;
+
+    }
+
+    if(!place){
+
+        alert("Enter where you're going.");
+        return;
+
+    }
+
+    if(duration<1){
+
+        alert(
+            "Enter how long you want to spend there."
+        );
+
+        return;
+
+    }
+
+    if(locked&&!lockedTime){
+
+        alert(
+            "Choose the exact time for the Order Lock."
+        );
+
+        return;
+
+    }
+
+
+    tasks.push({
+
+        id:Date.now(),
+
+        name,
+
+        place,
+
+        duration,
+
+        priority,
+
+        locked,
+
+        lockedTime,
+
+        reminder
+
+    });
+
+
+    saveTasks();
+
+
+    document.getElementById("name").value="";
+    document.getElementById("place").value="";
+
+    document.getElementById("durationHours").value=0;
+    document.getElementById("durationMinutes").value=30;
+
+    document.getElementById("orderLock").checked=false;
+
+    document.getElementById("lockedTime").value="";
+
+    document.getElementById("reminder").value=0;
+
+
+    toggleLockBox();
+
+    showTasks();
+
+}
+
+
+/* -------------------------
+   SHOW TASKS
+------------------------- */
+
+function showTasks(){
+
+    const box=
+        document.getElementById("tasks");
+
+
+    if(tasks.length===0){
+
+        box.innerHTML=
+        '<div class="empty">'+
+        'Nothing planned yet.<br><br>'+
+        'Add your first task above.'+
+        '</div>';
+
+        return;
+
+    }
+
+
+    box.innerHTML="";
+
+
+    tasks.forEach((task,index)=>{
+
+        const item=
+            document.createElement("div");
+
+
+        item.className=
+            "task"+
+            (task.locked?" locked":"");
+
+
+        item.innerHTML=`
+
+        <div class="task-title">
+
+        ${task.locked?"🔒 ":""}
+        ${escapeHTML(task.name)}
+
+        </div>
+
+        <div class="task-info">
+
+        📍 ${escapeHTML(task.place)}
+
+        <br>
+
+        ⏱️ ${formatTime(task.duration)} at location
+
+        ${task.locked?
+        `<br>🔒 ${task.lockedTime}`:""}
+
+        ${task.reminder?
+        `<br>🔔 ${task.reminder} minutes before`:""}
+
+        <br>
+
+        ⭐ Priority ${task.priority}
+
+        </div>
+
+        <div class="task-buttons">
+
+        <button
+        class="secondary"
+        onclick="directions(${index})">
+
+        🗺️ Directions
+
+        </button>
+
+        <button
+        class="danger"
+        onclick="removeTask(${index})">
+
+        🗑️ Remove
+
+        </button>
+
+        </div>
+        `;
+
+
+        box.appendChild(item);
+
+    });
+
+}
+
+
+function removeTask(index){
+
+    tasks.splice(index,1);
+
+    saveTasks();
+
+    showTasks();
+
+}
+
+
+/* -------------------------
+   OPTIMISER
+------------------------- */
+
+function travelEstimate(){
+
+    return 10;
+
+}
+
+
+function timeToMinutes(time){
+
+    if(!time)return 0;
+
+    const parts=time.split(":");
+
+    return Number(parts[0])*60+
+           Number(parts[1]);
+
+}
+
+
+function optimise(){
+
+    if(tasks.length===0){
+
+        alert(
+            "Add at least one task first."
+        );
+
+        return;
+
+    }
+
+
+    const available=
+        getAvailable();
+
+
+    if(available<1){
+
+        alert(
+            "Enter your available time."
+        );
+
+        return;
+
+    }
+
+
+    const lockedTasks=
+        tasks
+        .filter(t=>t.locked)
+        .sort(
+            (a,b)=>
+            timeToMinutes(a.lockedTime)-
+            timeToMinutes(b.lockedTime)
+        );
+
+
+    const unlockedTasks=
+        tasks
+        .filter(t=>!t.locked)
+        .sort(
+            (a,b)=>
+            b.priority-a.priority
+        );
+
+
+    currentPlan=[];
+
+    let used=0;
+
+
+    if(lockedTasks.length===0){
+
+        for(const task of unlockedTasks){
+
+            const cost=
+                task.duration+
+                travelEstimate();
+
+
+            if(used+cost<=available){
+
+                currentPlan.push(task);
+
+                used+=cost;
+
+            }
+
+        }
+
+
+        displayPlan(
+            used,
+            available,
+            "No Order Locks were set."
+        );
+
+        return;
+
+    }
+
+
+    let remaining=
+        unlockedTasks.slice();
+
+    let previousTime=0;
+
+
+    for(const lock of lockedTasks){
+
+        const lockTime=
+            timeToMinutes(lock.lockedTime);
+
+
+        while(remaining.length){
+
+            const candidate=
+                remaining[0];
+
+
+            const cost=
+                candidate.duration+
+                travelEstimate();
+
+
+            if(
+                cost<=lockTime-previousTime &&
+                used+cost<=available
+            ){
+
+                currentPlan.push(candidate);
+
+                used+=cost;
+
+                previousTime+=cost;
+
+                remaining.shift();
+
+            }else{
+
+                break;
+
+            }
+
+        }
+
+
+        if(
+            used+
+            lock.duration>
+            available
+        ){
+
+            displayPlan(
+                used,
+                available,
+                "⚠️ The Order Lock could not fit inside your available time."
+            );
+
+            return;
+
+        }
+
+
+        currentPlan.push(lock);
+
+        used+=lock.duration;
+
+
+        previousTime=
+            Math.max(
+                previousTime,
+                lockTime+lock.duration
+            );
+
+    }
+
+
+    for(const task of remaining){
+
+        const cost=
+            task.duration+
+            travelEstimate();
+
+
+        if(
+            used+cost<=available
+        ){
+
+            currentPlan.push(task);
+
+            used+=cost;
+
+        }
+
+    }
+
+
+    displayPlan(
+        used,
+        available,
+        "🔒 Order Locks were protected."
+    );
+
+
+    scheduleReminders();
+
+}
+
+
+/* -------------------------
+   DISPLAY PLAN
+------------------------- */
+
+function displayPlan(
+    total,
+    available,
+    message
+){
+
+    const result=
+        document.getElementById("result");
+
+    const plan=
+        document.getElementById("plan");
+
+
+    result.classList.remove("hidden");
+
+    plan.innerHTML="";
+
+
+    currentPlan.forEach(
+        (task,index)=>{
+
+        const item=
+            document.createElement("div");
+
+
+        item.className=
+            "plan-item"+
+            (task.locked?
+            " locked-plan":"");
+
+
+        item.innerHTML=`
+
+        <strong>
+
+        ${index+1}.
+        ${task.locked?"🔒 ":""}
+        ${escapeHTML(task.name)}
+
+        </strong>
+
+        <br>
+
+        📍 ${escapeHTML(task.place)}
+
+        <br>
+
+        ⏱️ ${formatTime(task.duration)} at location
+
+        ${task.locked?
+        `<br>🔒 Arrive at ${task.lockedTime}`:""}
+
+        ${task.reminder?
+        `<br>🔔 Reminder ${task.reminder} minutes before`:""}
+
+        <br><br>
+
+        <button
+        class="secondary"
+        onclick="openMap('${encodeURIComponent(task.place)}')">
+
+        🗺️ Get directions
+
+        </button>
+        `;
+
+
+        plan.appendChild(item);
+
+
+        if(
+            index<
+            currentPlan.length-1
+        ){
+
+            const arrow=
+                document.createElement("div");
+
+            arrow.className="plan-arrow";
+
+            arrow.textContent="↓";
+
+            plan.appendChild(arrow);
+
+        }
+
+    });
+
+
+    document.getElementById("total")
+        .textContent=
+        formatTime(total);
+
+
+    const activityTime=
+        currentPlan.reduce(
+            (sum,task)=>
+            sum+task.duration,
+            0
+        );
+
+
+    document.getElementById("activities")
+        .textContent=
+        formatTime(activityTime);
+
+
+    document.getElementById("remaining")
+        .textContent=
+        formatTime(
+            Math.max(
+                0,
+                available-total
+            )
+        );
+
+
+    document.getElementById("message")
+        .innerHTML=
+        escapeHTML(message)+
+        "<br><br>🎯 "+
+        currentPlan.length+
+        " task"+
+        (
+            currentPlan.length===1
+            ?""
+            :"s"
+        )+
+        " planned.";
+
+
+    updatePlanner();
+
+}
+
+
+/* -------------------------
+   PLANNER
+------------------------- */
+
+function updatePlanner(){
+
+    const planner=
+        document.getElementById(
+            "plannerView"
+        );
+
+
+    if(currentPlan.length===0){
+
+        planner.innerHTML=
+        '<div class="empty">'+
+        'Optimise your day to create your planner.'+
+        '</div>';
+
+        return;
+
+    }
+
+
+    planner.innerHTML="";
+
+
+    currentPlan.forEach(
+        (task,index)=>{
+
+        const item=
+            document.createElement("div");
+
+        item.className=
+            "plan-item"+
+            (task.locked?
+            " locked-plan":"");
+
+
+        item.innerHTML=`
+
+        <strong>
+        ${index+1}.
+        ${task.locked?"🔒 ":""}
+        ${escapeHTML(task.name)}
+        </strong>
+
+        <br>
+
+        📍 ${escapeHTML(task.place)}
+
+        <br>
+
+        ⏱️ ${formatTime(task.duration)}
+
+        ${
+            task.locked
+            ?
+            `<br>🔒 ${task.lockedTime}`
+            :
+            ""
+        }
+
+        `;
+
+        planner.appendChild(item);
+
+    });
+
+}
+
+
+/* -------------------------
+   DISCOVER
+------------------------- */
+
+function discover(category){
+
+    const results=
+        document.getElementById(
+            "discoverResults"
+        );
+
+
+    const data={
+
+        "Food":[
+
+            {
+                icon:"🍔",
+                name:"Popular Food Spot",
+                rating:"⭐ 4.7",
+                distance:"📍 8 min away",
+                info:"A highly-rated place to grab something to eat.",
+                duration:30
+            },
+
+            {
+                icon:"🍕",
+                name:"Local Pizza",
+                rating:"⭐ 4.6",
+                distance:"📍 12 min away",
+                info:"Popular choice for a quick meal.",
+                duration:40
+            }
+
+        ],
+
+
+        "Cafés":[
+
+            {
+                icon:"☕",
+                name:"Trending Café",
+                rating:"⭐ 4.8",
+                distance:"📍 6 min away",
+                info:"A cosy café that looks like a great stop.",
+                duration:25
+            },
+
+            {
+                icon:"🥐",
+                name:"Popular Bakery Café",
+                rating:"⭐ 4.7",
+                distance:"📍 10 min away",
+                info:"Great for a quick coffee and snack.",
+                duration:20
+            }
+
+        ],
+
+
+        "Shopping":[
+
+            {
+                icon:"🛍️",
+                name:"Popular Shopping Area",
+                rating:"⭐ 4.5",
+                distance:"📍 10 min away",
+                info:"A convenient place for a shopping stop.",
+                duration:45
+            }
+
+        ],
+
+
+        "Outdoors":[
+
+            {
+                icon:"🌳",
+                name:"Local Park",
+                rating:"⭐ 4.8",
+                distance:"📍 7 min away",
+                info:"A relaxing outdoor spot.",
+                duration:40
+            }
+
+        ],
+
+
+        "Entertainment":[
+
+            {
+                icon:"🎮",
+                name:"Entertainment Spot",
+                rating:"⭐ 4.6",
+                distance:"📍 15 min away",
+                info:"A popular place to have some fun.",
+                duration:60
+            }
+
+        ],
+
+
+        "Highly rated":[
+
+            {
+                icon:"⭐",
+                name:"Highly Rated Local Spot",
+                rating:"⭐ 4.9",
+                distance:"📍 9 min away",
+                info:"One of the highest-rated demonstration recommendations.",
+                duration:30
+            }
+
+        ]
+
+    };
+
+
+    const places=
+        data[category]||
+        data["Food"];
+
+
+    results.innerHTML=
+        `<h3>✨ ${category}</h3>`;
+
+
+    places.forEach(
+        place=>{
+
+        const card=
+            document.createElement("div");
+
+        card.className=
+            "place-card";
+
+
+        card.innerHTML=`
+
+        <div class="place-icon">
+        ${place.icon}
+        </div>
+
+        <div class="place-name">
+        ${place.name}
+        </div>
+
+        <div class="place-info">
+
+        ${place.rating}
+
+        <br>
+
+        ${place.distance}
+
+        <br>
+
+        ${place.info}
+
+        <br>
+
+        ⏱️ Suggested stay:
+        ${formatTime(place.duration)}
+
+        </div>
+
+        <button
+        class="primary"
+        onclick='addDiscovery(${JSON.stringify(place)})'>
+
+        ➕ Add to plan
+
+        </button>
+
+        `;
+
+
+        results.appendChild(card);
+
+    });
+
+}
+
+
+function addDiscovery(place){
+
+    const stay=
+        prompt(
+            `How long would you like to spend at ${place.name}?`,
+            place.duration
+        );
+
+
+    if(
+        stay===null||
+        Number(stay)<=0
+    ){
+
+        return;
+
+    }
+
+
+    tasks.push({
+
+        id:Date.now(),
+
+        name:place.name,
+
+        place:place.name,
+
+        duration:Number(stay),
+
+        priority:6,
+
+        locked:false,
+
+        lockedTime:"",
+
+        reminder:0
+
+    });
+
+
+    saveTasks();
+
+    showTasks();
+
+
+    alert(
+        `✅ ${place.name} was added to your plan!`
+    );
+
+
+    showSection("home");
+
+}
+
+
+/* -------------------------
+   MAPS
+------------------------- */
+
+function directions(index){
+
+    openMap(
+        encodeURIComponent(
+            tasks[index].place
+        )
+    );
+
+}
+
+
+function openMap(destination){
+
+    const start=
+        document
+        .getElementById("start")
+        .value
+        .trim();
+
+
+    const origin=
+        start
+        ?
+        encodeURIComponent(start)
+        :
+        "Current+Location";
+
+
+    const url=
+        "https://www.google.com/maps/dir/?api=1"+
+        "&origin="+origin+
+        "&destination="+destination;
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+function openAllDirections(){
+
+    if(currentPlan.length===0){
+
+        alert(
+            "Optimise your day first."
+        );
+
+        return;
+
+    }
+
+
+    const destinations=
+        currentPlan
+        .map(
+            task=>
+            encodeURIComponent(task.place)
+        );
+
+
+    const start=
+        document
+        .getElementById("start")
+        .value
+        .trim();
+
+
+    const origin=
+        start
+        ?
+        encodeURIComponent(start)
+        :
+        "Current+Location";
+
+
+    const destination=
+        destinations[
+            destinations.length-1
+        ];
+
+
+    const waypoints=
+        destinations
+        .slice(0,-1)
+        .join("|");
+
+
+    let url=
+        "https://www.google.com/maps/dir/?api=1"+
+        "&origin="+origin+
+        "&destination="+destination;
+
+
+    if(waypoints){
+
+        url+="&waypoints="+waypoints;
+
+    }
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* -------------------------
+   LOCATION
+------------------------- */
+
+function getLocation(){
+
+    const status=
+        document.getElementById(
+            "locationStatus"
+        );
+
+
+    if(!navigator.geolocation){
+
+        status.textContent=
+            "Location isn't supported.";
+
+        return;
+
+    }
+
+
+    status.textContent=
+        "📍 Finding you...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        position=>{
+
+            document.getElementById(
+                "start"
+            ).value=
+                position.coords.latitude
+                .toFixed(5)+
+                ", "+
+                position.coords.longitude
+                .toFixed(5);
+
+
+            status.textContent=
+                "✅ Location added.";
+
+        },
+
+
+        ()=>{
+
+            status.textContent=
+                "Couldn't access your location. Type it manually.";
+
+        }
+
+    );
+
+}
+
+
+/* -------------------------
+   SHARE
+------------------------- */
+
+function sharePlan(){
+
+    if(!currentPlan.length){
+
+        alert(
+            "Create a plan first."
+        );
+
+        return;
+
+    }
+
+
+    const text=
+        "🧠 My OptiLife plan\n\n"+
+        currentPlan
+        .map(
+            (task,index)=>
+            `${index+1}. ${task.name}`+
+            (
+                task.locked
+                ?
+                " 🔒 "+task.lockedTime
+                :
+                ""
+            )+
+            ` — ${formatTime(task.duration)}`
+        )
+        .join("\n")+
+        "\n\nYour day. Optimised.";
+
+
+    if(navigator.share){
+
+        navigator.share({
+
+            title:
+            "My OptiLife plan",
+
+            text
+
+        });
+
+    }else{
+
+        navigator.clipboard
+            .writeText(text);
+
+        alert(
+            "📋 Plan copied!"
+        );
+
+    }
+
+}
+
+
+/* -------------------------
+   STORAGE
+------------------------- */
+
+function saveTasks(){
+
+    localStorage.setItem(
+        "optLifeTasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+function loadTasks(){
+
+    try{
+
+        const saved=
+            localStorage.getItem(
+                "optLifeTasks"
+            );
+
+
+        if(saved){
+
+            tasks=
+                JSON.parse(saved);
+
+        }
+
+    }catch(error){
+
+        tasks=[];
+
+    }
+
+}
+
+
+/* -------------------------
+   SECURITY
+------------------------- */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* -------------------------
+   PWA
+------------------------- */
+
+if("serviceWorker" in navigator){
+
+    window.addEventListener(
+        "load",
+        ()=>{
+
+        navigator.serviceWorker
+            .register("sw.js")
+            .catch(
+                error=>{
+                    console.log(
+                        "Service worker registration failed:",
+                        error
+                    );
+                }
+            );
+
+    });
+
+}
+
+
+/* -------------------------
+   START
+------------------------- */
+
+loadTasks();
+
+showTasks();
+
+updateSliderValues();
+
+</script>
+
+</body>
+</html>
